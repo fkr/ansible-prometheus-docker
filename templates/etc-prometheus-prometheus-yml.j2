@@ -77,6 +77,7 @@ scrape_configs:
       - target_label: __address__
         replacement: blackbox-exporter:9115
 
+{% if prometheus_rsync_banner_targets is defined and prometheus_rsync_banner_targets|length > 0 %}
   # Rsyncd: probe every minute
   - job_name: blackbox_rsync_banner
     scrape_interval: 60s
@@ -95,7 +96,30 @@ scrape_configs:
       # Actually talk to the blackbox exporter
       - target_label: __address__
         replacement: blackbox-exporter:9115
+{% endif %}
 
+{% if prometheus_tcp_targets is defined and prometheus_tcp_targets|length > 0 %}
+  # Blackbox tcp check
+  - job_name: blackbox_tcp
+    scrape_timeout: 15s
+    scrape_interval: 60s
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+    - targets: {{ prometheus_tcp_targets | to_json }}
+    relabel_configs:
+      # Pass as url parameter
+      - source_labels: [__address__]
+        target_label: __param_target
+      # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+      # Actually talk to the blackbox exporter
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+{% endif %}
+ 
 {% for item in prometheus_targets %}
 
   - job_name: {{ item.jobname }}
