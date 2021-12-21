@@ -9,6 +9,15 @@ global:
 {% if prometheus_alertmanager_slack_webhook %}
   slack_api_url: https://hooks.slack.com/services/{{ prometheus_alertmanager_slack_webhook }}
 {% endif %}
+{% if prometheus_alertmanager_smtp_from %}
+  smtp_from: {{ prometheus_alertmanager_smtp_from }}
+  smtp_smarthost: {{ prometheus_alertmanager_smtp_smarthost  }}
+{% if prometheus_alertmanager_smtp_username %}
+  smtp_auth_username: {{ prometheus_alertmanager_smtp_username }}
+  smtp_auth_password: {{ prometheus_alertmanager_smtp_password }}
+  smtp_require_tls: true
+{% endif %}
+{% endif %}
 
 # https://github.com/prometheus/alertmanager#example
 route:
@@ -21,6 +30,11 @@ route:
 
   group_by: [jobname, instance]
 
+{% if prometheus_alertmanager_smtp_from %}
+  receiver: smtp-notify
+{% endif %}
+
+{% if prometheus_alertmanager_slack_webhook %}
   # If an alert isn't caught by a route, send it slack.
   receiver: slack-notify
 
@@ -33,6 +47,7 @@ route:
     - match:
         severity: error
       receiver: slack-notify-important
+{% endif %}
 
 
 # Mute warn notification if there is already an error notification
@@ -46,6 +61,12 @@ inhibit_rules:
 
 
 receivers:
+
+{% if prometheus_alertmanager_smtp_from %}
+  - name: smtp-notify
+    email_configs:
+      - to: {{ prometheus_alertmanager_smtp_to }}
+{% endif %}
 
 {% if prometheus_alertmanager_slack_webhook %}
   - name: slack-notify
