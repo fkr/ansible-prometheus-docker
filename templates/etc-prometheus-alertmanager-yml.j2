@@ -47,6 +47,7 @@ inhibit_rules:
 
 receivers:
 
+{% if prometheus_alertmanager_slack_webhook %}
   - name: slack-notify
     slack_configs:
       - send_resolved: true
@@ -75,3 +76,4 @@ receivers:
           Group labels: {{ .GroupLabels }}
           Common labels: {{ .CommonLabels }}
 {% endraw %}
+{% endif %}
