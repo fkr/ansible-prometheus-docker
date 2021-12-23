@@ -27,3 +27,23 @@ groups:
 {% raw %}
       summary: "Instance {{$labels.instance}} down"
       description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than {% endraw -%} {{ prometheus_alertmanager_instance_down_error }}."
+
+  - alert: BlackboxProbeFailed
+    expr: probe_success == 0
+    for: 0m
+    labels:
+      severity: error
+    annotations:
+{% raw %}
+      summary: "Blackbox probe failed (instance {{ $labels.instance }})"
+      description: "Probe failed\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}{% endraw -%}"
+
+  - alert: BlackboxSlowProbe
+    expr: avg_over_time(probe_duration_seconds[1m]) > 1
+    for: 1m
+    labels:
+      severity: warn
+    annotations:
+{% raw %}
+      summary: "Blackbox slow probe (instance {{ $labels.instance }})"
+      description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}{% endraw -%}"
