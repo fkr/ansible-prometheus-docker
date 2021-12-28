@@ -172,6 +172,18 @@
       - "{{ prometheus_docker_data_volume }}:/prometheus"
   register: _prometheus_container
 
+- debug:
+    var: "_prometheus_container.container.NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress"
+  register: prometheus_network_ip
+
+- debug:
+    var: "_blackboxexporter_container.container.NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress"
+  register: blackboxexporter_network_ip
+
+- debug:
+    var: "_alertmanager_container.container.NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress"
+  register: alertmanager_network_ip
+
 # In certain situations if a manual change means Prometheus in Docker
 # auto restarted but a host mounted file wasn't present it'll be auto
 # created as a directory instead of a file.
@@ -195,24 +207,7 @@
 
 - name: prometheus | return container IPs
   set_fact:
-    # These default() are needed because the "X.container" property is the
-    # recommended way to access this information but Ansible 2.6 only has the
-    # deprecated "X.ansible_facts.docker_container" property
-    prometheus_internal_ip: >-
-      {{
-        (_prometheus_container.container | default(
-           _prometheus_container.ansible_facts.docker_container)
-        ).NetworkSettings.IPAddress
-      }}
-    prometheus_blackboxexporter_internal_ip: >-
-      {{
-        (_blackboxexporter_container.container | default(
-           _blackboxexporter_container.ansible_facts.docker_container)
-        ).NetworkSettings.IPAddress
-      }}
-    prometheus_alertmanager_internal_ip: >-
-      {{
-        (_alertmanager_container.container | default(
-           _alertmanager_container.ansible_facts.docker_container)
-        ).NetworkSettings.IPAddress
-      }}
+    prometheus_internal_ip: "{{ prometheus_network_ip }}"
+    prometheus_blackboxexporter_internal_ip: "{{ blackboxexporter_network_ip }}"
+    prometheus_alertmanager_internal_ip: "{{ alertmanager_network_ip }}"
+
