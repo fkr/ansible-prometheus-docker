@@ -1,0 +1,6 @@
+{% if basic_auth_users is defined and basic_auth_users|length > 0 %}
+basic_auth_users:
+	{% for items in prometheus_users %}
+		{{ item }}
+	{% endfor %}
+{% endif %}
