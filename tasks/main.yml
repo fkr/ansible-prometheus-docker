@@ -195,7 +195,7 @@
 
 - name: prometheus | return container IPs
   set_fact:
-    prometheus_internal_ip: "{{ prometheus_network_ip }}"
-    prometheus_blackboxexporter_internal_ip: "{{ blackboxexporter_network_ip }}"
-    prometheus_alertmanager_internal_ip: "{{ alertmanager_network_ip }}"
+    prometheus_internal_ip: "{{ _prometheus_container.container.NetworkSettings.Networks.prometheus.IPAddress }}"
+    prometheus_blackboxexporter_internal_ip: "{{ _blackboxexporter_container.container.NetworkSettings.Networks.prometheus.IPAddress }}"
+    prometheus_alertmanager_internal_ip: "{{ _alertmanager_container.container.NetworkSettings.Networks.prometheus.IPAddress }}"
 
