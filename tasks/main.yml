@@ -172,18 +172,6 @@
       - "{{ prometheus_docker_data_volume }}:/prometheus"
   register: _prometheus_container
 
-- debug:
-    var: "_prometheus_container.container.NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress"
-  register: prometheus_network_ip
-
-- debug:
-    var: "_blackboxexporter_container.container.NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress"
-  register: blackboxexporter_network_ip
-
-- debug:
-    var: "_alertmanager_container.container.NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress"
-  register: alertmanager_network_ip
-
 # In certain situations if a manual change means Prometheus in Docker
 # auto restarted but a host mounted file wasn't present it'll be auto
 # created as a directory instead of a file.
