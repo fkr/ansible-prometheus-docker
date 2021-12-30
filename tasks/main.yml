@@ -36,6 +36,15 @@
     mode: 0644
   register: prometheus_configuration
 
+- name: prometheus | web configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/web.yml
+    force: true
+    src: etc-prometheus-web-yml.j2
+    mode: 0644
+  register: prometheus_web_configuration
+
 - name: prometheus | prometheus alert rules
   become: true
   template:
@@ -168,6 +177,7 @@
       # additional (optional) files
       - /etc/prometheus/rules/:/etc/prometheus/rules/:ro
       - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - /etc/prometheus/web.yml:/etc/prometheus/web.yml:ro
       - /etc/prometheus/targets/:/etc/prometheus/targets/:ro
       - "{{ prometheus_docker_data_volume }}:/prometheus"
   register: _prometheus_container
