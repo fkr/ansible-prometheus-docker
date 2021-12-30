@@ -1,6 +1,7 @@
 {% if prometheus_users is defined and prometheus_users|length > 0 %}
 basic_auth_users:
-	{% for users in prometheus_users %}
-		{{ key }}: {{ value | password_hash('bcrypt') }}
-	{% endfor %}
+{% for users in prometheus_users %}
+{% set user = users.split(':') %}
+  {{ user[0] }}: {{ user[1] | password_hash('blowfish', '1234567890123456789012', ident='2b') }}
+{% endfor %}
 {% endif %}
