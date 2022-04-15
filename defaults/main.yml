@@ -45,6 +45,9 @@ prometheus_http_2xx_internal_targets: []
 prometheus_http_2xx_external_targets: []
 prometheus_rsync_banner_targets: []
 
+# Alertmanager
+prometheus_alertmanager_domain_name: "alertmanager:9093"
+
 # External ports, set to 0 to disable
 prometheus_port: 9090
 prometheus_alertmanager_port: 9093
