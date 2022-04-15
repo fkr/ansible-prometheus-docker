@@ -40,6 +40,7 @@ prometheus_alertmanager_slack_channel: '#random'
 
 
 # Blackbox exporter
+prometheus_blackboxexporter_domain_name: "blackbox-exporter:9115"
 prometheus_http_2xx_internal_targets: []
 prometheus_http_2xx_external_targets: []
 prometheus_rsync_banner_targets: []
