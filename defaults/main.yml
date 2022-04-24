@@ -38,6 +38,15 @@ prometheus_alertmanager_instance_down_error: 2m
 prometheus_alertmanager_slack_webhook:
 prometheus_alertmanager_slack_channel: '#random'
 
+# Webhook
+prometheus_alertmanager_webhook:
+
+# E-Mail configs
+prometheus_alertmanager_smtp_from:
+prometheus_alertmanager_smtp_smarthost:
+prometheus_alertmanager_smtp_username:
+prometheus_alertmanager_smtp_password:
+prometheus_alertmanager_smtp_to:
 
 # Blackbox exporter
 prometheus_blackboxexporter_domain_name: "blackbox-exporter:9115"
