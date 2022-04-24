@@ -125,6 +125,13 @@ scrape_configs:
   - job_name: {{ item.jobname }}
     scrape_interval: {{ item.scrape_interval | default('15s') }}
     metrics_path: {{ item.metrics_path | default('/metrics') }}
+{% if item.scheme is defined and item.scheme is not none %}
+    scheme: {{ item.scheme }}
+{% endif %}
+{% if item.insecure_skip_verify is defined and item.insecure_skip_verify is true %}
+    tls_configs:
+      insecure_skip_verify: true
+{% endif %}
     static_configs:
 {%   if 'hosts' in item %}
     {# BUG in Ansible:
