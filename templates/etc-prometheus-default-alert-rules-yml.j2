@@ -47,3 +47,16 @@ groups:
 {% raw %}
       summary: "Blackbox slow probe (instance {{ $labels.instance }})"
       description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}{% endraw -%}"
+
+- name: SSL rules
+  rules:
+  - alert: SSLCertExpiringSoon
+      expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 4
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+{% raw %}
+        summary: "TLS certificate for (instance {{ $labels.instance }}) about to expire"
+        description: "TLS certificate will expire in {{ $value | humanizeDuration }} (instance {{ $labels.instance }}){% endraw -%}"
+
