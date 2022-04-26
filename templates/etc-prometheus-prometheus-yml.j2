@@ -79,6 +79,7 @@ scrape_configs:
 
 {% if prometheus_smtp_targets is defined and prometheus_smtp_targets|length > 0 %}
   - job_name: 'smtp_status_tls'
+    scrape_interval: {{ prometheus_smtp_targets_scrape_interval }}
     metrics_path: /probe
     params:
      module: [smtp_starttls]
@@ -98,6 +99,7 @@ scrape_configs:
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 
   - job_name: 'smtp_status'
+    scrape_interval: {{ prometheus_smtp_targets_scrape_interval }}
     metrics_path: /probe
     params:
       module: [smtp_banner]
