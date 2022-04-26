@@ -74,10 +74,10 @@
 
 - name: prometheus | blackbox configuration file
   become: true
-  copy:
+  template:
     dest: /etc/prometheus/blackbox-exporter.yml
     force: true
-    src: etc-prometheus-blackbox-exporter.yml
+    src: etc-prometheus-blackbox-exporter.yml.j2
     mode: 0644
   register: prometheus_blackboxexporter_configuration
 
@@ -98,6 +98,12 @@
   apt:
     name: python3-docker
     state: present
+
+- name: prometheus | docker started
+  become: true
+  service:
+    name: docker
+    state: started
 
 - name: prometheus | docker network
   become: true

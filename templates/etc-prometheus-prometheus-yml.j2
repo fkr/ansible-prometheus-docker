@@ -77,6 +77,46 @@ scrape_configs:
       - target_label: __address__
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 
+{% if prometheus_smtp_targets is defined and prometheus_smtp_targets|length > 0 %}
+  - job_name: 'smtp_status_tls'
+    metrics_path: /probe
+    params:
+     module: [smtp_starttls]
+    static_configs:
+    - targets: {{ prometheus_smtp_targets | to_json }}
+    relabel_configs:
+    # Ensure port is 25, pass as URL parameter
+      - source_labels: [__address__]
+        regex: (.*)(:.*)?
+        replacement: ${1}:587
+        target_label: __param_target
+    # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+    # Actually talk to the blackbox exporter though
+      - target_label: __address__
+        replacement: {{ prometheus_blackboxexporter_domain_name }}
+
+  - job_name: 'smtp_status'
+    metrics_path: /probe
+    params:
+      module: [smtp_banner]
+    static_configs:
+    - targets: {{ prometheus_smtp_targets | to_json }}
+    relabel_configs:
+    # Ensure port is 25, pass as URL parameter
+      - source_labels: [__address__]
+        regex: (.*)(:.*)?
+        replacement: ${1}:25
+        target_label: __param_target
+    # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+    # Actually talk to the blackbox exporter though
+      - target_label: __address__
+        replacement: {{ prometheus_blackboxexporter_domain_name }}
+{% endif %}
+
 {% if prometheus_rsync_banner_targets is defined and prometheus_rsync_banner_targets|length > 0 %}
   # Rsyncd: probe every minute
   - job_name: blackbox_rsync_banner
