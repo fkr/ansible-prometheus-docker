@@ -161,7 +161,6 @@ scrape_configs:
 {% endif %}
  
 {% for item in prometheus_targets %}
-
   - job_name: {{ item.jobname }}
     scrape_interval: {{ item.scrape_interval | default('15s') }}
     metrics_path: {{ item.metrics_path | default('/metrics') }}
@@ -169,7 +168,7 @@ scrape_configs:
     scheme: {{ item.scheme }}
 {% endif %}
 {% if item.insecure_skip_verify is defined and item.insecure_skip_verify is true %}
-    tls_configs:
+    tls_config:
       insecure_skip_verify: true
 {% endif %}
     static_configs:
