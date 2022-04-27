@@ -140,6 +140,26 @@ scrape_configs:
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 {% endif %}
 
+{% if prometheus_ssh_banner_targets is defined and prometheus_ssh_banner_targets|length > 0 %}
+  - job_name: blackbox_ssh_banner
+    scrape_interval: 60s
+    metrics_path: /probe
+    params:
+      module: [ssh_banner]
+    static_configs:
+    - targets: {{ prometheus_ssh_banner_targets | to_json }}
+    relabel_configs:
+      # Pass as url parameter
+      - source_labels: [__address__]
+        target_label: __param_target
+      # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+      # Actually talk to the blackbox exporter
+      - target_label: __address__
+        replacement: {{ prometheus_blackboxexporter_domain_name }}
+{% endif %}
+
 {% if prometheus_tcp_targets is defined and prometheus_tcp_targets|length > 0 %}
   # Blackbox tcp check
   - job_name: blackbox_tcp
@@ -150,6 +170,27 @@ scrape_configs:
       module: [tcp_connect]
     static_configs:
     - targets: {{ prometheus_tcp_targets | to_json }}
+    relabel_configs:
+      # Pass as url parameter
+      - source_labels: [__address__]
+        target_label: __param_target
+      # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+      # Actually talk to the blackbox exporter
+      - target_label: __address__
+        replacement: {{ prometheus_blackboxexporter_domain_name }}
+{% endif %}
+
+{% if prometheus_icmp_targets is defined and prometheus_icmp_targets|length > 0 %}
+  # Blackbox icmp check
+  - job_name: blackbox_icmp
+    scrape_interval: 60s
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+    - targets: {{ prometheus_icmp_targets | to_json }}
     relabel_configs:
       # Pass as url parameter
       - source_labels: [__address__]
