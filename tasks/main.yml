@@ -110,7 +110,6 @@
   docker_network:
     name: "{{ prometheus_docker_network }}"
     state: present
-    internal: "{{ prometheus_docker_network_internal }}"
 
 - name: prometheus | docker alertmanager
   become: true
