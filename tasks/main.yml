@@ -122,9 +122,7 @@
     name: alertmanager
     networks:
       - name: "{{ prometheus_docker_network }}"
-    published_ports: >-
-      {{ (prometheus_alertmanager_port > 0) |
-         ternary([(prometheus_alertmanager_port | string) + ':9093'], []) }}
+    published_ports: "{{ prometheus_alertmanager_listen_ip }}:{{prometheus_alertmanager_port }}:{{prometheus_alertmanager_port }}"
     # read_only: True
     recreate: "{{ prometheus_alertmanager_configuration.changed }}"
     restart_policy: always
@@ -142,10 +140,7 @@
     name: blackbox-exporter
     networks:
       - name: "{{ prometheus_docker_network }}"
-    published_ports: >-
-      {{ (prometheus_blackboxexporter_port > 0) |
-         ternary([(prometheus_blackboxexporter_port | string) + ':9115'],
-         []) }}
+    published_ports: "{{ prometheus_blackboxexporter_listen_ip }}:{{prometheus_blackboxexporter_port}}:{{prometheus_blackboxexporter_port}}"
     # read_only: True
     recreate: "{{ prometheus_blackboxexporter_configuration.changed }}"
     restart_policy: always
@@ -168,9 +163,7 @@
     name: prometheus
     networks:
       - name: "{{ prometheus_docker_network }}"
-    published_ports: >-
-      {{ (prometheus_port > 0) | ternary([(prometheus_port | string) +
-         ':9090'], []) }}
+    published_ports: "{{ prometheus_listen_ip }}:{{ prometheus_port }}:{{ prometheus_port }}"
     # read_only: True
     recreate: >-
       {{ prometheus_configuration.changed or
@@ -210,9 +203,21 @@
   # The asserts will be in the same order as the previous task
   no_log: true
 
+- name: prometheus | lookup prometheus container IP
+  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' prometheus
+  register: _prometheus_container_ip
+
+- name: prometheus | lookup alertmanager container IP
+  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' alertmanager
+  register: _prometheus_alertmanager_container_ip
+
+- name: prometheus | lookup blackboxexporter container IP
+  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' blackbox-exporter
+  register: _prometheus_blackboxexporter_container_ip
+
 - name: prometheus | return container IPs
   set_fact:
-    prometheus_internal_ip: "{{ _prometheus_container.container.NetworkSettings.Networks.prometheus.IPAddress }}"
-    prometheus_blackboxexporter_internal_ip: "{{ _blackboxexporter_container.container.NetworkSettings.Networks.prometheus.IPAddress }}"
-    prometheus_alertmanager_internal_ip: "{{ _alertmanager_container.container.NetworkSettings.Networks.prometheus.IPAddress }}"
+    prometheus_internal_ip: "{{ _prometheus_container_ip.stdout }}"
+    prometheus_alertmanager_internal_ip: "{{ _prometheus_alertmanager_container_ip.stdout }}"
+    prometheus_blackboxexporter_internal_ip: "{{ _prometheus_blackboxexporter_container_ip.stdout }}"
 

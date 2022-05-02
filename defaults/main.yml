@@ -60,9 +60,12 @@ prometheus_smtp_targets_scrape_interval: "60s"
 # Alertmanager
 prometheus_alertmanager_domain_name: "alertmanager:9093"
 
-# External ports, set to 0 to disable
+# Ports & IPs
+prometheus_listen_ip: "127.0.0.1"
 prometheus_port: 9090
+prometheus_alertmanager_listen_ip: "127.0.0.1"
 prometheus_alertmanager_port: 9093
+prometheus_blackboxexporter_listen_ip: "127.0.0.1"
 prometheus_blackboxexporter_port: 9115
 
 # Additional command line arguments for prometheus
