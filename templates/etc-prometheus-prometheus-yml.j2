@@ -202,6 +202,27 @@ scrape_configs:
       - target_label: __address__
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 {% endif %}
+
+{% if prometheus_icmp_v4_targets is defined and prometheus_icmp_v4_targets|length > 0 %}
+  # Blackbox icmp v4 check
+  - job_name: blackbox_icmp_v4
+    scrape_interval: 60s
+    metrics_path: /probe
+    params:
+      module: [icmp_v4]
+    static_configs:
+    - targets: {{ prometheus_icmp_v4_targets | to_json }}
+    relabel_configs:
+      # Pass as url parameter
+      - source_labels: [__address__]
+        target_label: __param_target
+      # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+      # Actually talk to the blackbox exporter
+      - target_label: __address__
+        replacement: {{ prometheus_blackboxexporter_domain_name }}
+{% endif %}
  
 {% for item in prometheus_targets %}
   - job_name: {{ item.jobname }}

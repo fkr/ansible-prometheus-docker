@@ -30,6 +30,11 @@ modules:
   icmp:
     prober: icmp
     timeout: 5s
+  icmp_v4:
+    prober: icmp
+    timeout: 5s
+    icmp:
+     preferred_ip_protocol: ip4
   smtp_starttls:
     prober: tcp
     timeout: 20s
