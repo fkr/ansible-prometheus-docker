@@ -43,7 +43,7 @@ modules:
       tls_config:
         insecure_skip_verify: true
       query_response:
-        - expect: "^220 ([^ ]+) ESMTP (.+)$"
+        - expect: "^220 ([^ ]+) ESMTP(.*)$"
         - send: "EHLO prober\r"
         - expect: "^250-(.*)"
         - send: "STARTTLS\r"
@@ -58,7 +58,7 @@ modules:
     tcp:
       preferred_ip_protocol: ip4
       query_response:
-        - expect: "^220 ([^ ]+) ESMTP (.+)$"
+        - expect: "^220 ([^ ]+) ESMTP(.*)$"
         - send: "EHLO prober\r"
         - expect: "^250-(.*)"
         - send: "MAIL FROM:{{ prometheus_blackboxexporter_smtp_test_from }}\r"
