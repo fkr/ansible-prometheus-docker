@@ -209,7 +209,7 @@ scrape_configs:
     scrape_interval: 60s
     metrics_path: /probe
     params:
-      module: [icmp_ipv4]
+      module: [icmp_v4]
     static_configs:
     - targets: {{ prometheus_icmp_v4_targets | to_json }}
     relabel_configs:
