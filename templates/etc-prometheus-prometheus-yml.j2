@@ -60,7 +60,7 @@ scrape_configs:
 
   # External URLs: probe every minute
   - job_name: blackbox_http_2xx_external
-    scrape_interval: 60s
+    scrape_interval: {{ prometheus_http_2xx_external_targets_interval }}
     metrics_path: /probe
     params:
       module: [http_2xx]
