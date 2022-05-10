@@ -77,7 +77,7 @@ scrape_configs:
       - target_label: __address__
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 
-{% if prometheus_smtp_targets is defined and prometheus_smtp_targets|length > 0 %}
+{% if prometheus_smtp_starttlls_targets is defined and prometheus_smtp_starttls_targets|length > 0 %}
   - job_name: 'smtp_status_tls'
     scrape_interval: {{ prometheus_smtp_targets_scrape_interval }}
     metrics_path: /probe
@@ -97,7 +97,9 @@ scrape_configs:
     # Actually talk to the blackbox exporter though
       - target_label: __address__
         replacement: {{ prometheus_blackboxexporter_domain_name }}
+{% endif %}
 
+{% if prometheus_smtp_targets is defined and prometheus_smtp_targets|length > 0 %}
   - job_name: 'smtp_status'
     scrape_interval: {{ prometheus_smtp_targets_scrape_interval }}
     metrics_path: /probe
