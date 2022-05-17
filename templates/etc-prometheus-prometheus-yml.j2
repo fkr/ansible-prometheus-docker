@@ -84,7 +84,7 @@ scrape_configs:
     params:
      module: [smtp_starttls]
     static_configs:
-    - targets: {{ prometheus_smtp_targets | to_json }}
+    - targets: {{ prometheus_smtp_starttls_targets | to_json }}
     relabel_configs:
     # Ensure port is 25, pass as URL parameter
       - source_labels: [__address__]
