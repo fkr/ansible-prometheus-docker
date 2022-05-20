@@ -233,6 +233,9 @@ scrape_configs:
 {% if item.scheme is defined and item.scheme is not none %}
     scheme: {{ item.scheme }}
 {% endif %}
+{% if item.bearer_token is defined and item.bearer_token is not none %}
+    bearer_token: {{ item.bearer_token }}
+{% endif %}
 {% if item.insecure_skip_verify is defined and item.insecure_skip_verify is true %}
     tls_config:
       insecure_skip_verify: true
