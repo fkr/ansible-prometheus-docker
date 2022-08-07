@@ -1,6 +1,9 @@
 ---
 # defaults file for ansible-role-prometheus
 
+prometheus_global_scrape_interval: 60s
+prometheus_global_evaluation_interval: 60s
+
 prometheus_static_targets:
   - 'localhost:9090'
 
