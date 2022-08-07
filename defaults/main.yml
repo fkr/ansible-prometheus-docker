@@ -58,8 +58,14 @@ prometheus_blackboxexporter_smtp_test_rcpt: "rcpt@example.net"
 prometheus_http_2xx_internal_targets: []
 prometheus_http_2xx_external_targets: []
 prometheus_rsync_banner_targets: []
-prometheus_http_2xx_external_targets_interval: "60s"
-prometheus_smtp_targets_scrape_interval: "60s"
+prometheus_http_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_http_2xx_external_targets_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_smtp_targets_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_rsync_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_ssh_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_tcp_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_tcp_scrape_timeout: 15s
+prometheus_icmp_scrape_interval: "{{ prometheus_global_scrape_interval }}"
 
 # Alertmanager
 prometheus_alertmanager_domain_name: "alertmanager:9093"

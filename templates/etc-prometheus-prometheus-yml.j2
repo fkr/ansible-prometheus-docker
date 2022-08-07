@@ -41,7 +41,7 @@ scrape_configs:
 
   # Internal URLs: probe every 15s
   - job_name: blackbox_http_2xx_internal
-    scrape_interval: 15s
+    scrape_interval: {{ prometheus_http_scrape_interval }}
     metrics_path: /probe
     params:
       module: [http_2xx]
@@ -60,7 +60,7 @@ scrape_configs:
 
   # External URLs: probe every minute
   - job_name: blackbox_http_2xx_external
-    scrape_interval: {{ prometheus_http_2xx_external_targets_interval }}
+    scrape_interval: {{ prometheus_http_2xx_external_targets_scrape_interval }}
     metrics_path: /probe
     params:
       module: [http_2xx]
@@ -124,7 +124,7 @@ scrape_configs:
 {% if prometheus_rsync_banner_targets is defined and prometheus_rsync_banner_targets|length > 0 %}
   # Rsyncd: probe every minute
   - job_name: blackbox_rsync_banner
-    scrape_interval: 60s
+    scrape_interval: {{ prometheus_rsync_scrape_interval }}
     metrics_path: /probe
     params:
       module: [rsync_banner]
@@ -144,7 +144,7 @@ scrape_configs:
 
 {% if prometheus_ssh_banner_targets is defined and prometheus_ssh_banner_targets|length > 0 %}
   - job_name: blackbox_ssh_banner
-    scrape_interval: 60s
+    scrape_interval: {{ prometheus_ssh_scrape_interval }}
     metrics_path: /probe
     params:
       module: [ssh_banner]
@@ -165,8 +165,8 @@ scrape_configs:
 {% if prometheus_tcp_targets is defined and prometheus_tcp_targets|length > 0 %}
   # Blackbox tcp check
   - job_name: blackbox_tcp
-    scrape_timeout: 15s
-    scrape_interval: 60s
+    scrape_timeout: {{ prometheus_tcp_scrape_timeout }}
+    scrape_interval: {{ prometheus_tcp_scrape_interval }}
     metrics_path: /probe
     params:
       module: [tcp_connect]
@@ -187,7 +187,7 @@ scrape_configs:
 {% if prometheus_icmp_targets is defined and prometheus_icmp_targets|length > 0 %}
   # Blackbox icmp check
   - job_name: blackbox_icmp
-    scrape_interval: 60s
+    scrape_interval: {{ prometheus_icmp_scrape_interval }}
     metrics_path: /probe
     params:
       module: [icmp]
@@ -208,7 +208,7 @@ scrape_configs:
 {% if prometheus_icmp_v4_targets is defined and prometheus_icmp_v4_targets|length > 0 %}
   # Blackbox icmp v4 check
   - job_name: blackbox_icmp_v4
-    scrape_interval: 60s
+    scrape_interval: {{ prometheus_icmp_scrape_interval }}
     metrics_path: /probe
     params:
       module: [icmp_v4]
