@@ -66,6 +66,13 @@ prometheus_ssh_scrape_interval: "{{ prometheus_global_scrape_interval }}"
 prometheus_tcp_scrape_interval: "{{ prometheus_global_scrape_interval }}"
 prometheus_tcp_scrape_timeout: 15s
 prometheus_icmp_scrape_interval: "{{ prometheus_global_scrape_interval }}"
+prometheus_blackbox_exporter_http_timeout: 10s
+prometheus_blackbox_exporter_rsync_timeout: 5s
+prometheus_blackbox_exporter_tcp_timeout: 10s
+prometheus_blackbox_exporter_ssh_timeout: 10s
+prometheus_blackbox_exporter_icmp_timeout: 10s
+prometheus_blackbox_exporter_icmp_v4_timeout: 10s
+prometheus_blackbox_exporter_smtp_timeout: 20s
 
 # Alertmanager
 prometheus_alertmanager_domain_name: "alertmanager:9093"
