@@ -30,7 +30,7 @@ groups:
 
   - alert: BlackboxProbeFailed
     expr: probe_success == 0
-    for: 0m
+    for: {{ prometheus_alertmanager_probe_failed }}
     labels:
       severity: error
     annotations:
@@ -40,7 +40,7 @@ groups:
 
   - alert: BlackboxSlowProbe
     expr: avg_over_time(probe_duration_seconds[1m]) > 1
-    for: 1m
+    for: {{ prometheus_alertmanager_probe_slow }}
     labels:
       severity: warn
     annotations:

@@ -36,6 +36,8 @@ prometheus_alert_repeat_interval: 3h
 # Default times for scrape failures
 prometheus_alertmanager_instance_down_warn: 5s
 prometheus_alertmanager_instance_down_error: 2m
+prometheus_alertmanager_probe_slow: 2m
+prometheus_alertmanager_probe_failed: 2m
 
 # Slack
 prometheus_alertmanager_slack_webhook:
