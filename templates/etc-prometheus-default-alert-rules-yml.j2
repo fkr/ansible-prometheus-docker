@@ -12,27 +12,27 @@ groups:
 
   - alert: instance_down
     expr: up == 0
-    for: {{ prometheus_alertmanager_instance_down_warn }}
+    for: {{ prometheus_rules_instance_down_warn }}
     labels:
       severity: warn
     annotations:
 {% raw %}
       summary: "Instance {{$labels.instance}} may be down"
-      description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than {% endraw -%} {{ prometheus_alertmanager_instance_down_warn }}."
+      description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than {% endraw -%} {{ prometheus_rules_instance_down_warn }}."
 
   - alert: instance_down
     expr: up == 0
-    for: {{ prometheus_alertmanager_instance_down_error }}
+    for: {{ prometheus_rules_instance_down_error }}
     labels:
       severity: error
     annotations:
 {% raw %}
       summary: "Instance {{$labels.instance}} down"
-      description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than {% endraw -%} {{ prometheus_alertmanager_instance_down_error }}."
+      description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than {% endraw -%} {{ prometheus_rules_instance_down_error }}."
 
   - alert: BlackboxProbeFailed
     expr: probe_success == 0
-    for: {{ prometheus_alertmanager_probe_failed }}
+    for: {{ prometheus_rules_probe_failed_duration }}
     labels:
       severity: error
     annotations:
@@ -54,34 +54,34 @@ groups:
   rules:
 
   - alert: BlackboxSlowProbe
-    expr: avg_over_time(probe_duration_seconds[1m]) > 1
-    for: {{ prometheus_alertmanager_probe_slow }}
+    expr: avg_over_time(probe_duration_seconds[1m]) > {{ prometheus_rules_probe_slow }}
+    for: {{ prometheus_rules_probe_slow_duration }}
     labels:
       severity: warn
     annotations:
 {% raw %}
       summary: "Blackbox slow probe (instance {{ $labels.instance }})"
-      description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}{% endraw -%}"
+      description: "Blackbox probe took more than treshold value to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }} - treshold: {% endraw -%} {{ prometheus_rules_probe_slow }}s"
 
   - alert: BlackboxProbeSlowPing
-    expr: avg_over_time(probe_icmp_duration_seconds[1m]) > 1
-    for: 1m
+    expr: avg_over_time(probe_icmp_duration_seconds[1m]) > {{ prometheus_rules_probe_ping_slow }}
+    for: {{ prometheus_rules_probe_ping_slow_duration }}
     labels:
       severity: warning
     annotations:
 {% raw %}
       summary: "Blackbox probe slow ping (instance {{ $labels.instance }})"
-      description: "Blackbox ping took more than 1s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}{% endraw -%}"
+      description: "Blackbox ping took more than treshold value to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }} - treshold: {% endraw -%} {{ prometheus_rules_probe_ping_slow }}s"
 
   - alert: BlackboxProbeSlowHttp
-    expr: avg_over_time(probe_http_duration_seconds[1m]) > 1
-    for: 1m
+    expr: avg_over_time(probe_http_duration_seconds[1m]) > {{ prometheus_rules_probe_http_slow }}
+    for: {{ prometheus_rules_probe_http_slow_duration }}
     labels:
       severity: warning
     annotations:
 {% raw %}
       summary: "Blackbox probe slow HTTP (instance {{ $labels.instance }})"
-      description: "HTTP request took more than 1s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}{% endraw -%}"
+      description: "HTTP request took more than treshold value to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }} - treshold: {% endraw -%} {{ prometheus_rules_probe_http_slow }}s"
 
 - name: SSL rules
   rules:
