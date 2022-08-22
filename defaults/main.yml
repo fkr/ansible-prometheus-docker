@@ -40,6 +40,7 @@ prometheus_rules_probe_slow_duration: 2m
 prometheus_rules_probe_ping_slow_duration: "{{ prometheus_rules_probe_slow_duration }}"
 prometheus_rules_probe_http_slow_duration: "{{ prometheus_rules_probe_slow_duration }}"
 prometheus_rules_probe_failed_duration: 2m
+prometheus_rules_probe_http_failed_duration: "{{ prometheus_rules_probe_failed_duration }}"
 prometheus_rules_probe_slow_treshold: 2
 prometheus_rules_probe_ping_slow_treshold: "{{ prometheus_rules_probe_slow_treshold }}"
 prometheus_rules_probe_http_slow_treshold: "{{ prometheus_rules_probe_slow_treshold }}"

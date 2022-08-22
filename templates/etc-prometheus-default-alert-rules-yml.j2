@@ -42,7 +42,7 @@ groups:
 
   - alert: BlackboxProbeHttpFailure
     expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
-    for: 0m
+    for: {{ prometheus_rules_probe_http_failed_duration }}
     labels:
       severity: critical
     annotations:
