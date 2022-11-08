@@ -53,6 +53,7 @@ prometheus_alertmanager_slack_channel: '#random'
 prometheus_alertmanager_webhook:
 
 # E-Mail configs
+prometheus_alertmanager_smtp_enable: false
 prometheus_alertmanager_smtp_from:
 prometheus_alertmanager_smtp_smarthost:
 prometheus_alertmanager_smtp_username:

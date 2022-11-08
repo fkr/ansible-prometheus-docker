@@ -9,7 +9,7 @@ global:
 {% if prometheus_alertmanager_slack_webhook is not none %}
   slack_api_url: https://hooks.slack.com/services/{{ prometheus_alertmanager_slack_webhook }}
 {% endif %}
-{% if prometheus_alertmanager_smtp_from is not none %}
+{% if prometheus_alertmanager_smtp_enable is true %}
   smtp_from: {{ prometheus_alertmanager_smtp_from }}
   smtp_smarthost: {{ prometheus_alertmanager_smtp_smarthost  }}
 {% if prometheus_alertmanager_smtp_username is not none %}
@@ -61,7 +61,7 @@ inhibit_rules:
 receivers:
 
   - name: notify
-{% if prometheus_alertmanager_smtp_from is not none %}
+{% if prometheus_alertmanager_smtp_enable is true %}
     email_configs:
       - to: {{ prometheus_alertmanager_smtp_to }}
 {% endif %}
