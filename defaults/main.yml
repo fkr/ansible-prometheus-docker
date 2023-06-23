@@ -115,6 +115,6 @@ prometheus_docker_data_volume: prometheus-data
 ######################################################################
 
 # Prometheus component versions
-prometheus_version: 2.45.0-rc.0
+prometheus_version: 2.45.0
 prometheus_alertmanager_version: 0.25.0
 prometheus_blackboxexporter_version: 0.24.0
