@@ -149,6 +149,23 @@
       - /etc/prometheus/blackbox-exporter.yml:/etc/prometheus/blackbox-exporter.yml:ro
   register: _blackboxexporter_container
 
+- name: prometheus | docker nextcloud exporter
+  become: true
+  docker_container:
+    command: >
+      --server "{{ item.host }}"
+      --auth-token "{{ item.auth_token }}"
+      --addr ":{{ item.port }}"
+    image: ghcr.io/xperimental/nextcloud-exporter:{{ prometheus_nextcloudexporter_version }}
+    name: "nextcloud-exporter-{{ item.identifier }}"
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ prometheus_nextcloudexporter_listen_ip }}:{{ item.port }}:{{ item.port }}"
+    restart_policy: always
+    state: started
+  with_items:
+     "{{ prometheus_nextcloud_targets }}"
+
 - name: prometheus | docker prometheus
   become: true
   docker_container:

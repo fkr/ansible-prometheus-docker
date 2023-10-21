@@ -93,6 +93,7 @@ prometheus_alertmanager_listen_ip: "127.0.0.1"
 prometheus_alertmanager_port: 9093
 prometheus_blackboxexporter_listen_ip: "127.0.0.1"
 prometheus_blackboxexporter_port: 9115
+prometheus_nextcloudexporter_listen_ip: "127.0.0.1"
 
 # Additional command line arguments for prometheus
 prometheus_additional_command_args: ''
@@ -118,3 +119,4 @@ prometheus_docker_data_volume: prometheus-data
 prometheus_version: 2.47.1
 prometheus_alertmanager_version: 0.26.0
 prometheus_blackboxexporter_version: 0.24.0
+prometheus_nextcloudexporter_version: 0.6.2
