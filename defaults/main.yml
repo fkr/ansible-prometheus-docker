@@ -4,8 +4,7 @@
 prometheus_global_scrape_interval: 60s
 prometheus_global_evaluation_interval: 60s
 
-prometheus_static_targets:
-  - 'localhost:9090'
+prometheus_static_targets: []
 
 prometheus_targets: []
 
