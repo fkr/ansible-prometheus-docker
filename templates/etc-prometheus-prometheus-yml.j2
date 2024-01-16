@@ -236,6 +236,11 @@ scrape_configs:
 {% if item.bearer_token is defined and item.bearer_token is not none %}
     bearer_token: {{ item.bearer_token }}
 {% endif %}
+{% if item.basic_auth is defined and item.basic_auth is true %}
+    basic_auth:
+      username: {{ item.basic_auth_username }}
+      password: {{ item.basic_auth_password }}
+{% endif %}
 {% if item.insecure_skip_verify is defined and item.insecure_skip_verify is true %}
     tls_config:
       insecure_skip_verify: true
