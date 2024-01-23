@@ -5,6 +5,7 @@ prometheus_global_scrape_interval: 60s
 prometheus_global_evaluation_interval: 60s
 
 prometheus_static_targets: []
+prometheus_static_metrics_path: "/metrics"
 
 prometheus_targets: []
 
