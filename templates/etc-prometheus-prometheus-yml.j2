@@ -77,6 +77,25 @@ scrape_configs:
       - target_label: __address__
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 
+  # External URLs: probe every minute
+  - job_name: blackbox_http_v4_2xx_external
+    scrape_interval: {{ prometheus_http_2xx_external_targets_scrape_interval }}
+    metrics_path: /probe
+    params:
+      module: [http_v4_2xx]
+    static_configs:
+    - targets: {{ prometheus_http_v4_2xx_external_targets | to_json }}
+    relabel_configs:
+      # Pass as url parameter
+      - source_labels: [__address__]
+        target_label: __param_target
+      # Make instance label the target
+      - source_labels: [__param_target]
+        target_label: instance
+      # Actually talk to the blackbox exporter
+      - target_label: __address__
+        replacement: {{ prometheus_blackboxexporter_domain_name }}
+
 {% if prometheus_smtp_starttls_targets is defined and prometheus_smtp_starttls_targets|length > 0 %}
   - job_name: 'smtp_status_tls'
     scrape_interval: {{ prometheus_smtp_targets_scrape_interval }}

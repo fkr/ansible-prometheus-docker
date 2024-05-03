@@ -7,11 +7,24 @@ modules:
     prober: http
     timeout: {{ prometheus_blackbox_exporter_http_timeout }}
     http:
+  http_v4_2xx:
+    prober: http
+    timeout: {{ prometheus_blackbox_exporter_http_timeout }}
+    http:
+      ip_protocol_fallback: false
+      preferred_ip_protocol: ip4
   http_post_2xx:
     prober: http
     timeout: {{ prometheus_blackbox_exporter_http_timeout }}
     http:
       method: POST
+  http_post_v4_2xx:
+    prober: http
+    timeout: {{ prometheus_blackbox_exporter_http_timeout }}
+    http:
+      method: POST
+      ip_protocol_fallback: false
+      preferred_ip_protocol: ip4
   rsync_banner:
     prober: tcp
     timeout: {{ prometheus_blackbox_exporter_rsync_timeout }}
