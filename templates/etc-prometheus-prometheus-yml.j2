@@ -254,6 +254,16 @@ scrape_configs:
         - nextcloud-exporter-{{ item.identifier }}:{{ item.port }}
         {% endfor %}
 {% endif %}
+
+{% if prometheus_nextcloud_targets %}
+  - job_name: opnsense-exporter
+    scrape_interval: 60s
+    static_configs:
+      - targets:
+        {% for item in prometheus_opnsense_targets %}
+        - opnsense-exporter-{{ item.identifier }}:{{ item.port }}
+        {% endfor %}
+{% endif %}
  
 {% for item in prometheus_targets %}
   - job_name: {{ item.jobname }}

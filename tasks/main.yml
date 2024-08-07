@@ -166,6 +166,28 @@
   with_items:
      "{{ prometheus_nextcloud_targets }}"
 
+- name: prometheus | docker opnsense exporter
+  become: true
+  docker_container:
+    command: >
+      --log.level=debug
+      --opnsense.address="{{ item.host }}"
+      --opnsense.api-key="{{ item.api_key }}"
+      --opnsense.api-secret="{{ item.api_secret }}"
+      --exporter.instance-label="{{ item.label }}"
+      --web.listen-address=:"{{ item.port }}"
+      --opnsense.protocol="{{ item.protocol }}"
+      --opnsense.insecure
+    image: ghcr.io/athennamind/opnsense-exporter:{{ prometheus_opnsenseexporter_version }}
+    name: "opnsense-exporter-{{ item.identifier }}"
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ item.listen_address }}:{{ item.port }}:{{ item.port }}"
+    restart_policy: always
+    state: started
+  with_items:
+     "{{ prometheus_opnsense_targets }}"
+
 - name: prometheus | docker prometheus
   become: true
   docker_container:
