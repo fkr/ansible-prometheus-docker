@@ -15,6 +15,8 @@ prometheus_custom_targets: []
 
 prometheus_nextcloud_targets: []
 
+prometheus_opnsense_targets: []
+
 # Template with additional alert rules
 # Defaults to an empty placeholder file as this is easier than conditionally
 # deleting a file if it's not needed
@@ -68,6 +70,7 @@ prometheus_blackboxexporter_smtp_test_from: "ping@example.net"
 prometheus_blackboxexporter_smtp_test_rcpt: "rcpt@example.net"
 prometheus_http_2xx_internal_targets: []
 prometheus_http_2xx_external_targets: []
+prometheus_http_v4_2xx_external_targets: []
 prometheus_rsync_banner_targets: []
 prometheus_http_scrape_interval: "{{ prometheus_global_scrape_interval }}"
 prometheus_http_2xx_external_targets_scrape_interval: "{{ prometheus_global_scrape_interval }}"
