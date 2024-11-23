@@ -1,13 +1,8 @@
 Prometheus
 ==========
 
-[![Actions Status](https://github.com/ome/ansible-role-prometheus/workflows/Molecule/badge.svg)](https://github.com/ome/ansible-role-prometheus/actions)
-[![Ansible Role](https://img.shields.io/ansible/role/41324.svg)](https://galaxy.ansible.com/ome/prometheus/)
-
-Prometheus monitoring server, includes prometheus, alertmanager and blackbox-exporter.
+Prometheus monitoring server, includes prometheus, alertmanager, blackbox-exporter and some bundled exporters.
 This requires docker to be running (not handled by this role).
-
-This role is still in development.
 
 
 Parameters
@@ -55,40 +50,7 @@ This role sets the following variables which can be used in other tasks:
 These are intended for use when you don't want to expose the container ports using standard Docker port-forwarding (set `prometheus_*port: 0`).
 
 
-Example playbook
-----------------
-
-    - hosts: localhost
-      roles:
-      - role: ome.docker
-      - role: ome.prometheus
-
-
-Testing Slack alerts (manual)
------------------------------
-
-Change `prometheus_alertmanager_slack_webhook` in `playbook.yml` to a real Slack webhook. Run:
-
-    molecule test --destroy never
-    molecule login
-    docker stop fake-metrics
-
-Wait a few minutes, a Slack alert should be generated.
-
-If this fails try creating a [manual alert](https://github.com/prometheus/alertmanager/issues/437#issuecomment-263413632):
-
-    curl -H "Content-Type: application/json" -d '[{"labels":{"alertname":"TestAlert1"}}]' localhost:9093/api/v1/alerts
-
-The molecule test also includes a disk space alert configuration.
-To test this fill up at least 90% of the `/run` partition:
-
-    molecule login
-    dd if=/dev/zero of=/run/fill.space bs=1M count=...
-
-Wait a few minutes and you should see a disk space warning.
-
-
 Author Information
 ------------------
 
-ome-devel@lists.openmicroscopy.org.uk
+This role was originally forked from https://github.com/ome/ansible-role-prometheus
