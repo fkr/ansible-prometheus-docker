@@ -170,7 +170,7 @@
   become: true
   docker_container:
     command: >
-      --log.level=debug
+      --log.level=info
       --opnsense.address="{{ item.host }}"
       --opnsense.api-key="{{ item.api_key }}"
       --opnsense.api-secret="{{ item.api_secret }}"
