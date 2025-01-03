@@ -178,7 +178,7 @@
       --web.listen-address=:"{{ item.port }}"
       --opnsense.protocol="{{ item.protocol }}"
       --opnsense.insecure
-    image: ghcr.io/athennamind/opnsense-exporter:{{ prometheus_opnsenseexporter_version }}
+    image: ghcr.io/fkr/opnsense-exporter:{{ prometheus_opnsenseexporter_version }}
     name: "opnsense-exporter-{{ item.identifier }}"
     networks:
       - name: "{{ prometheus_docker_network }}"
