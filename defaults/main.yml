@@ -127,4 +127,4 @@ prometheus_version: 3.1.0
 prometheus_alertmanager_version: 0.27.0
 prometheus_blackboxexporter_version: 0.25.0
 prometheus_nextcloudexporter_version: 0.7.0
-prometheus_opnsenseexporter_version: latest
+prometheus_opnsenseexporter_version: 0.0.7
