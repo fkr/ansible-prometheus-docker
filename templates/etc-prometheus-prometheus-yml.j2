@@ -255,7 +255,7 @@ scrape_configs:
         {% endfor %}
 {% endif %}
 
-{% if prometheus_nextcloud_targets %}
+{% if prometheus_opnsense_targets %}
   - job_name: opnsense-exporter
     scrape_interval: 60s
     static_configs:
