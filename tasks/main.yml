@@ -4,7 +4,6 @@
 - name: ensure variables are defined
   assert:
     that:
-      - lookup('varnames', item)
       - lookup('vars', item) != none
       - lookup('vars', item) | length > 0
     fail_msg: Required variable {{ item }} is not well defined
