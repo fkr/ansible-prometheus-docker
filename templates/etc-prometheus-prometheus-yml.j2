@@ -287,11 +287,7 @@ scrape_configs:
 {% endif %}
     static_configs:
 {%   if 'hosts' in item %}
-    {# BUG in Ansible:
-       https://github.com/ansible/ansible/issues/27299#issuecomment-331068246
-       Workaround: "| to_json | from_json"
-    #}
-    - targets: {{ item.hosts | to_json | from_json | json_query("map(&join(':', [@, '" + (item.port | string) + "']), @)") | to_json }}
+    - targets: {{ item.hosts | map('regex_replace', '$', ':' + (item.port | string)) | list | to_json }}
 {%   endif %}
 {%   for group in item.groups | default([]) %}
 {%     for host in groups[group] | default([]) | sort %}
