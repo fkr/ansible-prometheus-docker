@@ -1,4 +1,5 @@
 Copyright (c) 2019, University of Dundee
+Copyright (c) 2021-2025, Felix Kronlage-Dammers
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
