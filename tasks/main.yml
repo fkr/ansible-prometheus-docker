@@ -4,7 +4,6 @@
 - name: ensure variables are defined
   assert:
     that:
-      - lookup('vars', item) != none
       - lookup('vars', item) | length > 0
     fail_msg: Required variable {{ item }} is not well defined
     success_msg: Required variable {{ item }} is well defined
@@ -13,7 +12,8 @@
     - prometheus_alertmanager_smtp_username
     - prometheus_alertmanager_smtp_password
     - prometheus_alertmanager_smtp_to
-  when: prometheus_alertmanager_smtp_from is defined
+    - prometheus_alertmanager_smtp_from
+  when: prometheus_alertmanager_smtp_enable
 
 - name: prometheus | create directories
   become: true
