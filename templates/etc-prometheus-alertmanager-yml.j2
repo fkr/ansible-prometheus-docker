@@ -16,8 +16,11 @@ global:
   smtp_auth_username: {{ prometheus_alertmanager_smtp_username }}
   smtp_auth_password: {{ prometheus_alertmanager_smtp_password }}
   smtp_require_tls: true
+{% else %}
+  smtp_require_tls: {{ prometheus_alertmanager_smtp_require_tls }}
 {% endif %}
 {% endif %}
+
 
 # https://github.com/prometheus/alertmanager#example
 route:
