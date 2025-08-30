@@ -1,7 +1,7 @@
 ---
 # tasks file for prometheus
 
-- name: ensure variables are defined
+- name: prometheus | ensure variables are defined for smtp
   assert:
     that:
       - lookup('vars', item) | length > 0
@@ -9,11 +9,20 @@
     success_msg: Required variable {{ item }} is well defined
   loop:
     - prometheus_alertmanager_smtp_smarthost
-    - prometheus_alertmanager_smtp_username
-    - prometheus_alertmanager_smtp_password
     - prometheus_alertmanager_smtp_to
     - prometheus_alertmanager_smtp_from
   when: prometheus_alertmanager_smtp_enable
+
+- name: prometheus | ensure variables are defined for authenticated smtp
+  assert:
+    that:
+      - lookup('vars', item) | length > 0
+    fail_msg: Required variable {{ item }} is not well defined
+    success_msg: Required variable {{ item }} is well defined
+  loop:
+    - prometheus_alertmanager_smtp_username
+    - prometheus_alertmanager_smtp_password
+  when: prometheus_alertmanager_smtp_username is not none and prometheus_alertmanager_smtp_username | length > 0
 
 - name: prometheus | create directories
   become: true
