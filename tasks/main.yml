@@ -53,6 +53,13 @@
     mode: 0644
   register: prometheus_alert_rules
 
+- name: prometheus | validate rule file names
+  assert:
+    that:
+      - item is match('.*\\.rules\\.yml$')
+    fail_msg: "File {{ item }} does not match pattern *.rules.yml"
+  loop: "{{ prometheus_additional_rules_files }}"
+
 - name: prometheus | additional alert rule files
   become: true
   copy:
