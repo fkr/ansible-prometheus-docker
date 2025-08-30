@@ -13,6 +13,13 @@
     - prometheus_alertmanager_smtp_from
   when: prometheus_alertmanager_smtp_enable
 
+- name: prometheus | ensure there is a port in the smarthost
+  assert:
+    that:
+      - prometheus_alertmanager_smtp_smarthost is match('.*:\d{2,}$')
+    fail_msg: Port is missing from prometheus_alertmanager_smtp_smarthost
+  when: prometheus_alertmanager_smtp_enable
+
 - name: prometheus | ensure variables are defined for authenticated smtp
   assert:
     that:
