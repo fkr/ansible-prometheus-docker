@@ -53,6 +53,14 @@
     mode: 0644
   register: prometheus_alert_rules
 
+- name: prometheus | additional alert rule files
+  become: true
+  copy:
+    dest: /etc/prometheus/rules/
+    src: "{{ item }}"
+    mode: '0644'
+  loop: "{{ prometheus_additional_rules_files }}"
+
 - name: prometheus | prometheus additional alert rules
   become: true
   template:
