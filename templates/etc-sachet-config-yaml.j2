@@ -1,0 +1,13 @@
+providers:
+  sms77:
+    api_key: {{ prometheus_sachet_api_key }}
+    debug: {{ prometheus_sachet_debug }}
+
+receivers:
+  - name: 'notify'
+    provider: 'sms77'
+    to:
+      {%- for item in prometheus_sachet_sms_to -%}
+      - '{{ item }}'
+      {%- endfor -%}
+    from: '{{ prometheus_sachet_sms_from }}'

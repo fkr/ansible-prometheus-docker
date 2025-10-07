@@ -251,6 +251,10 @@
       - "{{ prometheus_docker_data_volume }}:/prometheus"
   register: _prometheus_container
 
+- name: prometheus | sachet
+  include_tasks: sachet.yml
+  when: prometheus_sachet_enable is true
+
 # In certain situations if a manual change means Prometheus in Docker
 # auto restarted but a host mounted file wasn't present it'll be auto
 # created as a directory instead of a file.

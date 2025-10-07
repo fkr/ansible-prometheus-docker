@@ -1,0 +1,35 @@
+---
+# tasks file for prometheus
+
+- name: prometheus | create sachet config directory
+  become: true
+  file:
+    path: "/etc/sachet"
+    state: directory
+    mode: 0755
+
+- name: prometheus | sachet configuration file
+  become: true
+  template:
+    dest: /etc/sachet/config.yaml
+    force: true
+    src: etc-sachet-config-yaml.j2
+    mode: 0644
+  register: prometheus_sachet_configuration
+
+- name: prometheus | docker sachet
+  become: true
+  docker_container:
+    image: messagebird/sachet:{{ prometheus_sachet_version }}
+    name: sachet
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ prometheus_sachet_listen_ip }}:{{prometheus_sachet_port }}:{{prometheus_sachet_port }}"
+    # read_only: True
+    recreate: "{{ prometheus_sachet_configuration.changed }}"
+    restart_policy: always
+    state: started
+    volumes:
+      - /etc/sachet/config.yaml:/etc/sachet/config.yaml:ro
+  register: _sachet_container
+

@@ -24,6 +24,7 @@ prometheus_opnsense_targets: []
 prometheus_additional_rules_template:
   "etc-prometheus-additional-alert-rules-yml.j2"
 
+prometheus_alertmanager_resolve_timeout: 5m
 # https://github.com/prometheus/alertmanager#example
 # When a new group of alerts is created by an incoming alert, wait at
 # least 'group_wait' to send the initial notification.
@@ -93,6 +94,12 @@ prometheus_blackbox_exporter_smtp_timeout: 20s
 # Alertmanager
 prometheus_alertmanager_domain_name: "alertmanager:9093"
 
+# Sachet
+prometheus_sachet_enable: false
+prometheus_sachet_debug: false
+prometheus_sachet_sms_from: "PrometheusAlerting"
+
+
 # Ports & IPs
 prometheus_listen_ip: "127.0.0.1"
 prometheus_port: 9090
@@ -102,6 +109,8 @@ prometheus_blackboxexporter_listen_ip: "127.0.0.1"
 prometheus_blackboxexporter_port: 9115
 prometheus_nextcloudexporter_listen_ip: "127.0.0.1"
 prometheus_opnsense_exporter_listen_ip: "127.0.0.1"
+prometheus_sachet_listen_ip: "127.0.0.1"
+prometheus_sachet_port: "9876"
 
 # Additional command line arguments for prometheus
 prometheus_additional_command_args: ''
@@ -129,3 +138,4 @@ prometheus_alertmanager_version: 0.28.1
 prometheus_blackboxexporter_version: 0.26.0
 prometheus_nextcloudexporter_version: 0.8.0
 prometheus_opnsenseexporter_version: 0.0.11
+prometheus_sachet_version: 0.3.1
