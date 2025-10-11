@@ -7,7 +7,7 @@ receivers:
   - name: 'notify'
     provider: 'sms77'
     to:
-      {%- for item in prometheus_sachet_sms_to -%}
+{% for item in prometheus_sachet_sms_to %}
       - '{{ item }}'
-      {%- endfor -%}
+{% endfor %}
     from: '{{ prometheus_sachet_sms_from }}'
