@@ -50,6 +50,17 @@
     src: etc-prometheus-prometheus-yml.j2
     mode: 0644
   register: prometheus_configuration
+  when: prometheus_configuration_static is false and prometheus_configuration_static_file | length == 0
+
+- name: prometheus | prometheus static configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/prometheus.yml
+    force: true
+    src: "{{ prometheus_configuration_static_file }}"
+    mode: 0644
+  register: prometheus_configuration
+  when: prometheus_configuration_static_file | length > 0
 
 - name: prometheus | web configuration file
   become: true
@@ -59,6 +70,17 @@
     src: etc-prometheus-web-yml.j2
     mode: 0644
   register: prometheus_web_configuration
+  when: prometheus_web_configuration_static is false and prometheus_web_configuration_static_file | length == 0
+
+- name: prometheus | prometheus web static configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/web.yml
+    force: true
+    src: "{{ prometheus_web_configuration_static_file }}"
+    mode: 0644
+  register: prometheus_web_configuration
+  when: prometheus_web_configuration_static_file | length > 0
 
 - name: prometheus | prometheus alert rules
   become: true
@@ -101,6 +123,17 @@
     src: etc-prometheus-alertmanager-yml.j2
     mode: 0644
   register: prometheus_alertmanager_configuration
+  when: prometheus_alertmanager_configuration_static is false and prometheus_alertmanager_configuration_static_file | length == 0
+
+- name: prometheus | alertmanager static configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/alertmanager.yml
+    force: true
+    src: "{{ prometheus_alertmanager_configuration_static_file }}"
+    mode: 0644
+  register: prometheus_alertmanager_configuration
+  when: prometheus_alertmanager_configuration_static_file | length > 0
 
 - name: prometheus | blackbox configuration file
   become: true
@@ -110,6 +143,17 @@
     src: etc-prometheus-blackbox-exporter.yml.j2
     mode: 0644
   register: prometheus_blackboxexporter_configuration
+  when: prometheus_blackboxexporter_configuration_static is false and prometheus_blackboxexporter_configuration_static_file | length == 0
+
+- name: prometheus | prometheus backbox static configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/blackbox-exporter.yml
+    force: true
+    src: "{{ prometheus_blackboxexporter_configuration_static_file }}"
+    mode: 0644
+  register: prometheus_blackboxexporter_configuration
+  when: prometheus_blackboxexporter_configuration_static_file | length > 0
 
 - name: prometheus | file sd configs
   become: true
