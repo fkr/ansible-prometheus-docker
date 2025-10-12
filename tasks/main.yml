@@ -210,7 +210,9 @@
 - name: prometheus | docker blackbox-exporter
   become: true
   docker_container:
-    command: "--config.file=/etc/prometheus/blackbox-exporter.yml"
+    command: >
+      --config.file=/etc/prometheus/blackbox-exporter.yml
+      {{ prometheus_blackboxexporter_additional_command_args }}
     image: prom/blackbox-exporter:v{{ prometheus_blackboxexporter_version }}
     name: blackbox-exporter
     networks:
