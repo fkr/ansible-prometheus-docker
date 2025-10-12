@@ -41,6 +41,7 @@
     - /etc/prometheus
     - /etc/prometheus/rules
     - /etc/prometheus/targets
+    - /etc/prometheus/targets/manual
 
 - name: prometheus | prometheus configuration file
   become: true

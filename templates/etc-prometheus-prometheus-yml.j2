@@ -66,6 +66,10 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
     - targets: {{ prometheus_http_2xx_external_targets | to_json }}
+    file_sd_configs:
+      - files:
+          - '/etc/prometheus/targets/manual/blackbox_http*.json'
+        refresh_interval: 30s
     relabel_configs:
       # Pass as url parameter
       - source_labels: [__address__]
@@ -169,6 +173,10 @@ scrape_configs:
       module: [ssh_banner]
     static_configs:
     - targets: {{ prometheus_ssh_banner_targets | to_json }}
+    file_sd_configs:
+      - files:
+          - '/etc/prometheus/targets/manual/blackbox_ssh*.json'
+        refresh_interval: 30s
     relabel_configs:
       # Pass as url parameter
       - source_labels: [__address__]
@@ -191,6 +199,10 @@ scrape_configs:
       module: [tcp_connect]
     static_configs:
     - targets: {{ prometheus_tcp_targets | to_json }}
+    file_sd_configs:
+      - files:
+          - '/etc/prometheus/targets/manual/blackbox_tcp*.json'
+        refresh_interval: 30s
     relabel_configs:
       # Pass as url parameter
       - source_labels: [__address__]
@@ -212,6 +224,10 @@ scrape_configs:
       module: [icmp]
     static_configs:
     - targets: {{ prometheus_icmp_targets | to_json }}
+    file_sd_configs:
+      - files:
+          - '/etc/prometheus/targets/manual/blackbox_icmp*.json'
+        refresh_interval: 30s
     relabel_configs:
       # Pass as url parameter
       - source_labels: [__address__]
@@ -233,6 +249,10 @@ scrape_configs:
       module: [icmp_v4]
     static_configs:
     - targets: {{ prometheus_icmp_v4_targets | to_json }}
+    file_sd_configs:
+      - files:
+          - '/etc/prometheus/targets/manual/blackbox_icmp_v4*.json'
+        refresh_interval: 30s
     relabel_configs:
       # Pass as url parameter
       - source_labels: [__address__]
@@ -302,6 +322,16 @@ scrape_configs:
 {%     endfor %}
 {%   endfor %}
 {% endfor %}
+
+  - job_name: 'node-exporter'
+    file_sd_configs:
+      - files:
+          - '/etc/prometheus/targets/manual/node-exporter*.json'
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '(.+):.*'
+        target_label: instance
 
   # Other target files
   # (reloaded automatically, can be used for dynamic updates)
