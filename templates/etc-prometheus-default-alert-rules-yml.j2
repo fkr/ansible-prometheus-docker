@@ -14,7 +14,7 @@ groups:
     expr: up == 0
     for: {{ prometheus_rules_instance_down_warn }}
     labels:
-      severity: warn
+      severity: warning
     annotations:
 {% raw %}
       summary: "Instance {{$labels.instance}} may be down"
@@ -57,7 +57,7 @@ groups:
     expr: avg_over_time(probe_duration_seconds[1m]) > {{ prometheus_rules_probe_slow_treshold }}
     for: {{ prometheus_rules_probe_slow_duration }}
     labels:
-      severity: warn
+      severity: warning
     annotations:
 {% raw %}
       summary: "Blackbox slow probe (instance {{ $labels.instance }})"
