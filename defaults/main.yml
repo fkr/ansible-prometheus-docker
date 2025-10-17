@@ -78,6 +78,9 @@ prometheus_alertmanager_smtp_password:
 prometheus_alertmanager_smtp_to:
 prometheus_alertmanager_smtp_require_tls: true
 
+# Prometheus
+prometheus_domain_name: "prometheus:9090"
+
 # Blackbox exporter
 prometheus_blackboxexporter_domain_name: "blackbox-exporter:9115"
 prometheus_blackboxexporter_smtp_test_from: "ping@example.net"
