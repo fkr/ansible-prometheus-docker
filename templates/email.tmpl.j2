@@ -49,9 +49,9 @@
         <p><span class="label">Started:</span> {{ .StartsAt.Format "2006-01-02 15:04:05" }}</p>
         
         <div style="margin-top: 15px;">
-            <a href="{% endraw %}{{ prometheus_alertmanager_domain_name }}{% raw %}/#/silences/new?filter=%7Balertname%3D%22{{ .Labels.alertname }}%22{{ if .Labels.instance }}%2C%20instance%3D%22{{ .Labels.instance }}%22{{ end }}%7D" class="button silence">🔕 Silence Alert</a>
+            <a href="{{ $.ExternalURL }}/#/silences/new?filter=%7Balertname%3D%22{{ .Labels.alertname }}%22{{ if .Labels.instance }}%2C%20instance%3D%22{{ .Labels.instance }}%22{{ end }}%7D" class="button silence">🔕 Silence Alert</a>
             
-            <a href="{% endraw %}{{ prometheus_domain_name }}{% raw %}/graph?g0.expr={{ .Annotations.expr | urlquery }}&g0.tab=0" class="button view">📊 View in Prometheus</a>
+            <a href="{{ .GeneratorURL }}/graph?g0.expr={{ .Annotations.expr | urlquery }}&g0.tab=0" class="button view">📊 View in Prometheus</a>
             
             <a href="{{ .GeneratorURL }}" class="button view">🔗 View Details</a>
         </div>
@@ -60,7 +60,7 @@
     
     <hr>
     <p style="color: #777; font-size: 12px;">
-        Alertmanager: <a href="{% endraw %}{{ prometheus_alertmanager_domain_name }}{% raw %}">{% endraw %}{{ prometheus_alertmanager_domain_name}}{% raw %}</a>
+        Alertmanager: <a href="{{ .ExternalURL }}">{{ .ExternalURL }}</a>
     </p>
 </body>
 </html>
