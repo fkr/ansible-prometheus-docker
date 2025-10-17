@@ -1,0 +1,72 @@
+{# templates/email.tmpl.j2 #}
+{% raw %}
+{{ define "email.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .alert { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+        .critical { border-left: 5px solid #d9534f; }
+        .warning { border-left: 5px solid #f0ad4e; }
+        .error { border-left: 5px solid #d9534f; }
+        .label { font-weight: bold; }
+        .button { 
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            text-decoration: none;
+            border-radius: 4px;
+            color: white;
+        }
+        .silence { background-color: #5bc0de; }
+        .view { background-color: #5cb85c; }
+    </style>
+</head>
+<body>
+    <h2>{{ if eq .Status "firing" }}🔥 FIRING{{ else }}✅ RESOLVED{{ end }}</h2>
+    
+    {{ range .Alerts }}
+    <div class="alert {{ .Labels.severity }}">
+        <p><span class="label">Alert:</span> {{ .Labels.alertname }}</p>
+        <p><span class="label">Status:</span> {{ .Status }}</p>
+        <p><span class="label">Severity:</span> {{ .Labels.severity }}</p>
+        {{ if .Labels.instance }}
+        <p><span class="label">Instance:</span> {{ .Labels.instance }}</p>
+        {{ end }}
+        {{ if .Annotations.summary }}
+        <p><span class="label">Summary:</span> {{ .Annotations.summary }}</p>
+        {{ end }}
+        {{ if .Annotations.description }}
+        <p><span class="label">Description:</span> {{ .Annotations.description }}</p>
+        {{ end }}
+        
+        <p><span class="label">Started:</span> {{ .StartsAt.Format "2006-01-02 15:04:05" }}</p>
+        
+        <div style="margin-top: 15px;">
+            <a href="{% endraw %}{{ prometheus_alertmanager_domain_name }}{% raw %}/#/silences/new?filter=%7Balertname%3D%22{{ .Labels.alertname }}%22{{ if .Labels.instance }}%2C%20instance%3D%22{{ .Labels.instance }}%22{{ end }}%7D" class="button silence">🔕 Silence Alert</a>
+            
+            <a href="{% endraw %}{{ prometheus_domain_name }}{% raw %}/graph?g0.expr={{ .Annotations.expr | urlquery }}&g0.tab=0" class="button view">📊 View in Prometheus</a>
+            
+            <a href="{{ .GeneratorURL }}" class="button view">🔗 View Details</a>
+        </div>
+    </div>
+    {{ end }}
+    
+    <hr>
+    <p style="color: #777; font-size: 12px;">
+        Alertmanager: <a href="{% endraw %}{{ prometheus_alertmanager_domain_name }}{% raw %}">{% endraw %}{{ prometheus_alertmanager_domain_name}}{% raw %}</a>
+    </p>
+</body>
+</html>
+{{ end }}
+
+{{ define "email.subject" }}
+{{ if eq .Status "firing" }}[FIRING]{{ else }}[RESOLVED]{{ end }} {{ .GroupLabels.alertname }}
+{{ end }}
+{% endraw %}

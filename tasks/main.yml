@@ -42,6 +42,7 @@
     - /etc/prometheus/rules
     - /etc/prometheus/targets
     - /etc/prometheus/targets/manual
+    - /etc/prometheus/templates
 
 - name: prometheus | prometheus configuration file
   become: true
@@ -126,6 +127,14 @@
   register: prometheus_alertmanager_configuration
   when: prometheus_alertmanager_configuration_static is false and prometheus_alertmanager_configuration_static_file | length == 0
 
+- name: prometheus | alertmanager template file
+  become: true
+  template:
+    dest: /etc/prometheus/templates/email.tmpl
+    force: true
+    src: email.tmpl.j2
+    mode: 0644
+
 - name: prometheus | alertmanager static configuration file
   become: true
   template:
@@ -204,6 +213,7 @@
     state: started
     volumes:
       - /etc/prometheus/alertmanager.yml:/etc/prometheus/alertmanager.yml:ro
+      - /etc/prometheus/templates/:/etc/prometheus/templates/:ro
       - alertmanager-data:/alertmanager
   register: _alertmanager_container
 
