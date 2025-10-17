@@ -109,6 +109,7 @@ prometheus_alertmanager_domain_name: "alertmanager:9093"
 prometheus_sachet_enable: false
 prometheus_sachet_debug: false
 prometheus_sachet_sms_from: "Prometheus"
+prometheus_sachet_notifier: "notify"
 
 
 # Ports & IPs

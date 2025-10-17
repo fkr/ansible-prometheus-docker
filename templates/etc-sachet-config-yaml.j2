@@ -4,7 +4,7 @@ providers:
     debug: {{ prometheus_sachet_debug }}
 
 receivers:
-  - name: 'notify'
+  - name: '{{ prometheus_sachet_notifier }}'
     provider: 'sms77'
     to:
 {% for item in prometheus_sachet_sms_to %}
