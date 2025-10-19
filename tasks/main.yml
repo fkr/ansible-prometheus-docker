@@ -107,6 +107,7 @@
     src: "{{ item }}"
     mode: '0644'
   loop: "{{ prometheus_additional_rules_files }}"
+  register: prometheus_alert_rules_additional
 
 - name: prometheus | prometheus additional alert rules
   become: true
