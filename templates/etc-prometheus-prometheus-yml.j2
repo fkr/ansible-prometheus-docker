@@ -309,6 +309,12 @@ scrape_configs:
 {%   if 'hosts' in item %}
     - targets: {{ item.hosts | map('regex_replace', '$', ':' + (item.port | string)) | list | to_json }}
 {%   endif %}
+{% if item.file_sd_pattern is defined and item.file_sd_pattern != "" %}
+    file_sd_configs:
+      - files:
+         - '/etc/prometheus/targets/manual/{{ item.file_sd_pattern }}'
+        refresh_interval: 30s
+{% endif %}
 {%   for group in item.groups | default([]) %}
 {%     for host in groups[group] | default([]) | sort %}
     - targets:
@@ -322,16 +328,6 @@ scrape_configs:
 {%     endfor %}
 {%   endfor %}
 {% endfor %}
-
-  - job_name: 'node-exporter'
-    file_sd_configs:
-      - files:
-          - '/etc/prometheus/targets/manual/node-exporter*.json'
-        refresh_interval: 30s
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.+):.*'
-        target_label: instance
 
   # Other target files
   # (reloaded automatically, can be used for dynamic updates)
