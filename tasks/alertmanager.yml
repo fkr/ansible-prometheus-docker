@@ -1,0 +1,61 @@
+---
+# tasks file for alertmanager
+
+- name: prometheus | alertmanager configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/alertmanager.yml
+    force: true
+    src: etc-prometheus-alertmanager-yml.j2
+    mode: 0644
+  register: prometheus_alertmanager_configuration
+  when: prometheus_alertmanager_configuration_static is false and prometheus_alertmanager_configuration_static_file | length == 0
+
+- name: prometheus | alertmanager template file
+  become: true
+  template:
+    dest: /etc/prometheus/templates/email.tmpl
+    force: true
+    src: email.tmpl.j2
+    mode: 0644
+
+- name: prometheus | alertmanager static configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/alertmanager.yml
+    force: true
+    src: "{{ prometheus_alertmanager_configuration_static_file }}"
+    mode: 0644
+  register: prometheus_alertmanager_configuration
+  when: prometheus_alertmanager_configuration_static_file | length > 0
+
+- name: prometheus | docker alertmanager
+  become: true
+  docker_container:
+    command: >
+      --config.file=/etc/prometheus/alertmanager.yml
+      --storage.path=/alertmanager
+      {{ prometheus_alertmanager_additional_command_args }}
+    image: prom/alertmanager:v{{ prometheus_alertmanager_version }}
+    name: alertmanager
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ prometheus_alertmanager_listen_ip }}:{{prometheus_alertmanager_port }}:{{prometheus_alertmanager_port }}"
+    # read_only: True
+    recreate: "{{ prometheus_alertmanager_configuration.changed }}"
+    restart_policy: always
+    state: started
+    volumes:
+      - /etc/prometheus/alertmanager.yml:/etc/prometheus/alertmanager.yml:ro
+      - /etc/prometheus/templates/:/etc/prometheus/templates/:ro
+      - alertmanager-data:/alertmanager
+  register: _alertmanager_container
+
+- name: prometheus | lookup alertmanager container IP
+  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' alertmanager
+  register: _prometheus_alertmanager_container_ip
+
+- name: prometheus | return alertmanager container IP
+  set_fact:
+    prometheus_alertmanager_internal_ip: "{{ _prometheus_alertmanager_container_ip.stdout }}"
+
