@@ -13,12 +13,44 @@ global:
   external_labels:
     monitor: 'prometheus'
 
+{% if prometheus_remote_write_enabled or prometheus_remote_write_url != "" %}
+remote_write:
+{% endif %}
+{% if prometheus_remote_write_url != "" %}
+  - url: {{ prometheus_remote_write_url }}
+{% if prometheus_remote_write_user != "" }}
+    basic_auth:
+      username: {{ prometheus_remote_write_user }}
+      password: {{ prometheus_remote_write_password }}
+{% endif %}
+{% if prometheus_remote_write_bearer_token != "" }}
+    bearer_token: {{ prometheus_remote_write_bearer_token }}
+{% endif %}
+      # Queue configuration
+    queue_config:
+      capacity: 10000
+      max_shards: 10
+      min_shards: 1
+      max_samples_per_send: 5000
+      batch_send_deadline: 5s
+      min_backoff: 30ms
+      max_backoff: 5s
+
+    # Retry configuration
+    write_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'go_.*'
+        action: drop  # Optional: drop unnecessary metrics
+{% endif %}
+
+{% if prometheus_alertmanager_enabled %}
 # Alertmanager
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
       - {{ prometheus_alertmanager_domain_name }}
+{% endif %}
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
