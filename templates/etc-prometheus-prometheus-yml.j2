@@ -11,7 +11,10 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    monitor: 'prometheus'
+    monitor: '{{ prometheus_label_monitor }}'
+{% for item in prometheus_external_labels %}
+    {{ item.label }}: '{{ item.value }}'
+{% endfor %}
 
 {% if prometheus_remote_write_enabled or prometheus_remote_write_url != "" %}
 remote_write:

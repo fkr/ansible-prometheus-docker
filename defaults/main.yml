@@ -8,6 +8,9 @@ prometheus_global_scrape_timeout: 10s
 prometheus_static_targets: []
 prometheus_static_metrics_path: "/metrics"
 
+prometheus_label_monitor: "prometheus"
+prometheus_external_labels: []
+
 prometheus_targets: []
 
 prometheus_sd_targets: []
