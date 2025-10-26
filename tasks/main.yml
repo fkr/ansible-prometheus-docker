@@ -99,6 +99,7 @@
       - item is match('.*\\.rules\\.yml$')
     fail_msg: "File {{ item }} does not match pattern *.rules.yml"
   loop: "{{ prometheus_additional_rules_files }}"
+  when: prometheus_additional_rules_files is defined
 
 - name: prometheus | additional alert rule files
   become: true
@@ -107,6 +108,7 @@
     src: "{{ item }}"
     mode: '0644'
   loop: "{{ prometheus_additional_rules_files }}"
+  when: prometheus_additional_rules_files is defined
   register: prometheus_alert_rules_additional
 
 - name: prometheus | prometheus additional alert rules
@@ -206,6 +208,25 @@
     state: started
   with_items:
      "{{ prometheus_opnsense_targets }}"
+
+- name: prometheus | docker blackbox-exporter
+  become: true
+  docker_container:
+    command: >
+      --config.file=/etc/prometheus/blackbox-exporter.yml
+      {{ prometheus_blackboxexporter_additional_command_args }}
+    image: prom/blackbox-exporter:v{{ prometheus_blackboxexporter_version }}
+    name: blackbox-exporter
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ prometheus_blackboxexporter_listen_ip }}:{{prometheus_blackboxexporter_port}}:{{prometheus_blackboxexporter_port}}"
+    # read_only: True
+    recreate: "{{ prometheus_blackboxexporter_configuration.changed }}"
+    restart_policy: always
+    state: started
+    volumes:
+      - /etc/prometheus/blackbox-exporter.yml:/etc/prometheus/blackbox-exporter.yml:ro
+  register: _blackboxexporter_container
 
 - name: prometheus | docker prometheus
   become: true
