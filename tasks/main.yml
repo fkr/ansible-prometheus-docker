@@ -237,9 +237,7 @@
       --web.console.libraries=/usr/share/prometheus/console_libraries
       --web.console.templates=/usr/share/prometheus/consoles
       --web.config.file=/etc/prometheus/web.yml
-{% if prometheus_remote_write_enabled is true %}
-      --web.enable-remote-write-receiver
-{% endif %}
+      {{ '--web.enable-remote-write-receiver' if prometheus_remote_write_enabled | default(false) else '' }}
       {{ prometheus_additional_command_args }}
     image: prom/prometheus:v{{ prometheus_version }}
     name: prometheus
@@ -249,6 +247,7 @@
     # read_only: True
     recreate: >-
       {{ prometheus_configuration.changed or
+         prometheus_web_configuration.changed or
          prometheus_alert_rules.changed or
          prometheus_alert_rules_additional.changed }}
     restart_policy: always

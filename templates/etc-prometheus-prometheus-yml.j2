@@ -18,12 +18,12 @@ remote_write:
 {% endif %}
 {% if prometheus_remote_write_url != "" %}
   - url: {{ prometheus_remote_write_url }}
-{% if prometheus_remote_write_user != "" }}
+{% if prometheus_remote_write_user != "" %}
     basic_auth:
       username: {{ prometheus_remote_write_user }}
       password: {{ prometheus_remote_write_password }}
 {% endif %}
-{% if prometheus_remote_write_bearer_token != "" }}
+{% if prometheus_remote_write_bearer_token != "" %}
     bearer_token: {{ prometheus_remote_write_bearer_token }}
 {% endif %}
       # Queue configuration
