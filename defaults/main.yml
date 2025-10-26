@@ -7,6 +7,7 @@ prometheus_global_scrape_timeout: 10s
 
 prometheus_static_targets: []
 prometheus_static_metrics_path: "/metrics"
+prometheus_static_job_name: "prometheus"
 
 prometheus_label_monitor: "prometheus"
 prometheus_external_labels: []
