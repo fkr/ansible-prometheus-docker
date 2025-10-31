@@ -99,7 +99,7 @@
       - item is match('.*\\.rules\\.yml$')
     fail_msg: "File {{ item }} does not match pattern *.rules.yml"
   loop: "{{ prometheus_additional_rules_files }}"
-  when: prometheus_additional_rules_files is defined
+  when: prometheus_additional_rules_files is defined and prometheus_additional_rules_files | length > 0
 
 - name: prometheus | additional alert rule files
   become: true
