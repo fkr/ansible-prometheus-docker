@@ -300,7 +300,7 @@ scrape_configs:
         replacement: {{ prometheus_blackboxexporter_domain_name }}
 {% endif %}
 
-{% if prometheus_nextcloud_targets %}
+{% if prometheus_nextcloud_targets | length > 0 %}
   - job_name: nextcloud-exporter
     scrape_interval: 60s
     static_configs:
@@ -310,7 +310,7 @@ scrape_configs:
         {% endfor %}
 {% endif %}
 
-{% if prometheus_opnsense_targets %}
+{% if prometheus_opnsense_targets | length > 0 %}
   - job_name: opnsense-exporter
     scrape_interval: 60s
     static_configs:
