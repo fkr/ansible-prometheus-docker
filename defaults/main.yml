@@ -141,7 +141,7 @@ prometheus_snmp_exporter_port: 9116
 prometheus_nextcloudexporter_listen_ip: "127.0.0.1"
 prometheus_opnsense_exporter_listen_ip: "127.0.0.1"
 prometheus_sachet_listen_ip: "127.0.0.1"
-prometheus_sachet_port: "9876"
+prometheus_sachet_port: 9876
 
 # Additional command line arguments for prometheus
 prometheus_additional_command_args: ''
