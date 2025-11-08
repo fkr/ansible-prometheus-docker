@@ -1,0 +1,21 @@
+---
+
+- name: prometheus | docker snmp exporter
+  become: true
+  docker_container:
+    image: prom/snmp-exporter:v{{ prometheus_snmp_exporter_version }}
+    name: snmp-exporter
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ prometheus_snmp_exporter_listen_ip }}:{{prometheus_snmp_exporter_port}}:{{prometheus_snmp_exporter_port}}"
+    restart_policy: always
+    state: started
+  register: _snmp_exporter_container
+
+- name: prometheus | lookup snmp exporter container IP
+  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' snmp-exporter
+  register: _prometheus_snmp_exporter_container_ip
+
+- name: prometheus | return snmp container IP
+  set_fact:
+    prometheus_snmp_exporter_internal_ip: "{{ _prometheus_snmp_exporter_container_ip.stdout }}"

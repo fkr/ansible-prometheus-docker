@@ -280,6 +280,10 @@
   include_tasks: sachet.yml
   when: prometheus_sachet_enable is true
 
+- name: prometheus | snmp exporter
+  include_tasks: snmp.yml
+  when: prometheus_snmp_targets | length > 0
+
 # In certain situations if a manual change means Prometheus in Docker
 # auto restarted but a host mounted file wasn't present it'll be auto
 # created as a directory instead of a file.
