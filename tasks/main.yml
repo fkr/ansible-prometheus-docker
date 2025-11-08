@@ -54,6 +54,13 @@
   register: prometheus_configuration
   when: prometheus_configuration_static is false and prometheus_configuration_static_file | length == 0
 
+- name: Debug template result
+  debug:
+    msg:
+      - "Task skipped: {{ prometheus_configuration.skipped | default(false) }}"
+      - "Changed: {{ prometheus_configuration.changed | default('UNDEFINED') }}"
+      - "Full result: {{ prometheus_configuration }}"
+
 - name: prometheus | prometheus static configuration file
   become: true
   template:
@@ -61,7 +68,7 @@
     force: true
     src: "{{ prometheus_configuration_static_file }}"
     mode: 0644
-  register: prometheus_configuration
+  register: prometheus_configuration_static_file_var
   when: prometheus_configuration_static_file | length > 0
 
 - name: prometheus | web configuration file
@@ -118,7 +125,7 @@
     force: true
     src: "{{ prometheus_additional_rules_template }}"
     mode: 0644
-  register: prometheus_alert_rules_additional
+  register: prometheus_alert_rules_additional_2
 
 - name: prometheus | blackbox configuration file
   become: true
@@ -247,9 +254,11 @@
     # read_only: True
     recreate: >-
       {{ prometheus_configuration.changed or
+         prometheus_configuration_static_file_var.changed or
          prometheus_web_configuration.changed or
          prometheus_alert_rules.changed or
-         prometheus_alert_rules_additional.changed }}
+         prometheus_alert_rules_additional.changed or
+         prometheus_alert_rules_additional2.changed }}
     restart_policy: always
     state: started
     user: "{{ prometheus_docker_user | default(omit) }}"
