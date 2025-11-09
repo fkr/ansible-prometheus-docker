@@ -1,6 +1,6 @@
 auths:
 {% for item in prometheus_snmp_targets %}
-{%- if item.auth is true %}
+{%- if item.auth is true and item.username is defined and item.password is defined %}
   {{ item.name }}_auth:
     version: 3
     security_level: {{ item.security_level | default("authPriv") }}
