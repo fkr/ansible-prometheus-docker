@@ -258,7 +258,7 @@
          prometheus_web_configuration.changed or
          prometheus_alert_rules.changed or
          prometheus_alert_rules_additional.changed or
-         prometheus_alert_rules_additional2.changed }}
+         prometheus_alert_rules_additional_2.changed }}
     restart_policy: always
     state: started
     user: "{{ prometheus_docker_user | default(omit) }}"
