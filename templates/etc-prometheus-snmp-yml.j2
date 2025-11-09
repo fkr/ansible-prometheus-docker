@@ -8,7 +8,7 @@ auths:
     password: {{ item.password }}
     auth_protocol: {{ item.auth_protocol | default("SHA") }}
     priv_protocol: {{ item.priv_protocol | default("AES") }} 
-{%- endif %}
+{% endif %}
   public_v1:
     community: public
     security_level: noAuthNoPriv
