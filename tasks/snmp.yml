@@ -1,21 +1,28 @@
 ---
 
+- name: prometheus | snmp configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/snmp.yml
+    force: true
+    src: etc-prometheus-snmp-yml.j2
+    mode: 0644
+  register: prometheus_snmp_configuration
+
 - name: prometheus | docker snmp exporter
   become: true
   docker_container:
+    command: >
+      '--config.file=/etc/prometheus/snmp.yml'
     image: prom/snmp-exporter:v{{ prometheus_snmp_exporter_version }}
     name: snmp-exporter
     networks:
       - name: "{{ prometheus_docker_network }}"
     published_ports: "{{ prometheus_snmp_exporter_listen_ip }}:{{prometheus_snmp_exporter_port}}:{{prometheus_snmp_exporter_port}}"
+    recreate: >-
+      {{ prometheus_snmp_configuration.changed }}
     restart_policy: always
     state: started
-  register: _snmp_exporter_container
+    volumes:
+      - /etc/prometheus/snmp.yml:/etc/prometheus/snmp.yml:ro
 
-- name: prometheus | lookup snmp exporter container IP
-  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' snmp-exporter
-  register: _prometheus_snmp_exporter_container_ip
-
-- name: prometheus | return snmp container IP
-  set_fact:
-    prometheus_snmp_exporter_internal_ip: "{{ _prometheus_snmp_exporter_container_ip.stdout }}"
