@@ -325,7 +325,7 @@ scrape_configs:
   - job_name: snmp-{{ item.name }}
     metrics_path: /snmp
     params:
-      module: [if_mib]  # Use if_mib for basic interface statistics
+      module: [{{ item.module | default("if_mib") }} ]  # Use if_mib for basic interface statistics
 {% if item.auth is true %}
       auth: [{{ item.name}}_auth]
 {% else %}
