@@ -1,0 +1,25 @@
+---
+
+- name: prometheus | pve configuration file
+  become: true
+  template:
+    dest: /etc/prometheus/pve.yml
+    force: true
+    src: etc-prometheus-pve-yml.j2
+    mode: 0644
+  register: prometheus_pve_configuration
+
+- name: prometheus | docker pve exporter
+  become: true
+  docker_container:
+    image: prompve/prometheus-pve-exporter:{{ prometheus_pve_exporter_version }}
+    name: pve-exporter
+    networks:
+      - name: "{{ prometheus_docker_network }}"
+    published_ports: "{{ prometheus_pve_exporter_listen_ip }}:{{prometheus_pve_exporter_port}}:{{prometheus_pve_exporter_port}}"
+    recreate: >-
+      {{ prometheus_pve_configuration.changed }}
+    restart_policy: always
+    state: started
+    volumes:
+      - /etc/prometheus/pve.yml:/etc/prometheus/pve.yml:ro

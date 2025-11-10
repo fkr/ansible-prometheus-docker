@@ -13,14 +13,12 @@ prometheus_label_monitor: "prometheus"
 prometheus_external_labels: []
 
 prometheus_targets: []
-
 prometheus_sd_targets: []
-
 prometheus_custom_targets: []
-
 prometheus_nextcloud_targets: []
 prometheus_opnsense_targets: []
 prometheus_snmp_targets: []
+prometheus_pve_targets: []
 
 # Configuration file handling
 prometheus_configuration_static: false
@@ -138,6 +136,8 @@ prometheus_blackboxexporter_listen_ip: "127.0.0.1"
 prometheus_blackboxexporter_port: 9115
 prometheus_snmp_exporter_listen_ip: "127.0.0.1"
 prometheus_snmp_exporter_port: 9116
+prometheus_pve_exporter_listen_ip: "127.0.0.1"
+prometheus_pve_exporter_port: 9221
 prometheus_nextcloudexporter_listen_ip: "127.0.0.1"
 prometheus_opnsense_exporter_listen_ip: "127.0.0.1"
 prometheus_sachet_listen_ip: "127.0.0.1"
@@ -171,6 +171,7 @@ prometheus_version: 3.7.3
 prometheus_alertmanager_version: 0.29.0
 prometheus_blackboxexporter_version: 0.26.0
 prometheus_snmp_exporter_version: 0.29.0
+prometheus_pve_exporter_version: 3.5.5
 prometheus_nextcloudexporter_version: 0.8.0
 prometheus_opnsenseexporter_version: 0.0.11
 prometheus_sachet_version: 0.3.1

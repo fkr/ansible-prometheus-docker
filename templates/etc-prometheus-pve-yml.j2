@@ -1,0 +1,13 @@
+{% for item in prometheus_pve_targets %}
+{{ item.name }}:
+{% if item.password is defined %}
+   user: {{ item.username }}
+   password: {{ item.password }}
+{% elif item.token_name is defined and item.token_value is defined %}
+   user: {{ item.username }}
+   token_name: {{ item.token_name }}
+   token_value: {{ item.token_value }}
+{% endif %}
+   verify_ssl: {{ item.verify_ssl | default(true) }}
+{% endfor %}
+

@@ -284,6 +284,10 @@
   include_tasks: snmp.yml
   when: prometheus_snmp_targets | length > 0
 
+- name: prometheus | pve exporter
+  include_tasks: pve.yml
+  when: prometheus_pve_targets | length > 0
+
 # In certain situations if a manual change means Prometheus in Docker
 # auto restarted but a host mounted file wasn't present it'll be auto
 # created as a directory instead of a file.

@@ -344,7 +344,30 @@ scrape_configs:
         replacement: snmp-exporter:9116  # SNMP exporter address
    {% endfor %}
 {% endif %}
- 
+
+{% if prometheus_pve_targets | length > 0 %}
+{% for item in prometheus_pve_targets %}
+  - job_name: pve-{{ item.name }}
+    static_configs:
+      - targets:
+{% for target in item.targets %}
+        - {{ target }}
+{% endfor %}
+    metrics_path: /pve
+    params:
+      module: [{{ item.name }}]
+      cluster: ['1']
+      node: ['1']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: pve-exporter:{{ prometheus_pve_exporter_port }}
+{% endfor %}
+{% endif %}
+
 {% for item in prometheus_targets %}
   - job_name: {{ item.jobname }}
     scrape_interval: {{ item.scrape_interval | default(prometheus_global_scrape_interval) }}
