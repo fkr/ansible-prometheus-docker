@@ -21,11 +21,11 @@
 
 - name: prometheus | alertmanager static configuration file
   become: true
-  template:
+  copy:
     dest: /etc/prometheus/alertmanager.yml
-    force: true
     src: "{{ prometheus_alertmanager_configuration_static_file }}"
-    mode: 0644
+    mode: '0644'
+    force: true
   register: prometheus_alertmanager_configuration
   when: prometheus_alertmanager_configuration_static_file | length > 0
 
