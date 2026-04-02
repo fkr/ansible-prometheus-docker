@@ -176,5 +176,5 @@ prometheus_snmp_exporter_version: 0.30.1
 prometheus_pve_exporter_version: 3.8.0
 # https://github.com/xperimental/nextcloud-exporter
 prometheus_nextcloudexporter_version: 0.9.0
-prometheus_opnsenseexporter_version: 0.0.11
+prometheus_opnsenseexporter_version: latest
 prometheus_sachet_version: 0.3.1
