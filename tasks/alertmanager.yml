@@ -52,7 +52,7 @@
   register: _alertmanager_container
 
 - name: prometheus | lookup alertmanager container IP
-  command:  docker inspect --format '{''{ .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress}''}' alertmanager
+  command: "docker inspect --format '{% raw %}{{{% endraw %} .NetworkSettings.Networks.{{ prometheus_docker_network }}.IPAddress{% raw %}}}{% endraw %}' alertmanager"
   register: _prometheus_alertmanager_container_ip
 
 - name: prometheus | return alertmanager container IP
