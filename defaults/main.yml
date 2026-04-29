@@ -167,8 +167,8 @@ prometheus_docker_data_volume: prometheus-data
 ######################################################################
 
 # Prometheus component versions
-prometheus_version: 3.11.2
-prometheus_alertmanager_version: 0.31.1
+prometheus_version: 3.11.3
+prometheus_alertmanager_version: 0.32.1
 prometheus_blackboxexporter_version: 0.28.0
 # https://github.com/prometheus/snmp_exporter
 prometheus_snmp_exporter_version: 0.30.1
